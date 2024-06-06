@@ -4,11 +4,13 @@ plugins {
     id("io.spring.dependency-management") version "1.1.4"
 }
 
-group = "com.nixiedroid.rest"
-version = "0.0.1-SNAPSHOT"
+
 
 java {
+    group = "com.nixiedroid.rest"
+    version = "1"
     sourceCompatibility = JavaVersion.VERSION_17
+
 }
 
 configurations {
