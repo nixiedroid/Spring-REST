@@ -1,33 +1,101 @@
 package com.nixiedroid.rest.controllers;
 
+import com.nixiedroid.rest.interfaces.CoffeeRepository;
 import com.nixiedroid.rest.models.Coffee;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller class for  <a href="/coffees">/coffees</a> endpoint
+ *
+ * @see com.nixiedroid.rest.models.Coffee
+ */
 @RestController
+@RequestMapping("/coffees")
 public class CoffeeController {
-    private final List<Coffee > coffees = new ArrayList<>();
+    /**
+     * Coffee repository accessor
+     */
+    private final CoffeeRepository coffeeRepository;
 
-    public CoffeeController() {
-       coffees.addAll(List.of(
-               new Coffee("Americano"),
-               new Coffee("Latte"),
-               new Coffee("Cappuccino")
-       ));
+
+    /**
+     * Coffee controller constructor
+     * @param coffeeRepository is autowired by Spring
+     */
+
+    //Can be omitted since Spring v4.3
+    @Autowired
+    public CoffeeController(CoffeeRepository coffeeRepository) {
+        this.coffeeRepository = coffeeRepository;
+        this.coffeeRepository.saveAll(List.of(
+                new Coffee(1, "Americano"),
+                new Coffee(2, "Latte"),
+                new Coffee(3, "Cappuccino")
+        ));
     }
+
+    /**
+     * Listens for GET requests at <a href="/coffees">/coffees</a>
+     *
+     * @return json list of {@link com.nixiedroid.rest.models.Coffee}
+     */
+
     //@RequestMapping(value = "/coffees", method = RequestMethod.GET)
-    @GetMapping("/coffees")
-    List<Coffee> getCoffees(){
-     return coffees;
+    @GetMapping
+    Iterable<Coffee> getCoffees() {
+        return coffeeRepository.findAll();
     }
-    @GetMapping("/coffees/{id}")
-    Optional<Coffee> getCoffeeById(@PathVariable int id ){
-        for (Coffee coffee: coffees){
-            if (id == coffee.getId()) return Optional.of(coffee);
-        }
-        return Optional.empty();
+
+    /**
+     * Listens for GET requests at <a href="/coffees{id}">/coffees/{id}</a>
+     *
+     * @return json object {@link com.nixiedroid.rest.models.Coffee} if {id} exists or null
+     */
+    @GetMapping("/{id}")
+    Optional<Coffee> getCoffeeById(@PathVariable int id) {
+       return coffeeRepository.findById(id);
     }
+
+    /**
+     * Listens for POST requests at <a href="/coffees">/coffees</a>
+     * and creates coffee object accordingly
+     *
+     * @return newly created json object {@link com.nixiedroid.rest.models.Coffee} on success
+     */
+    @PostMapping
+    Coffee addCoffee(@RequestBody Coffee coffee) {
+       return coffeeRepository.save(coffee);
+    }
+
+
+    /**
+     * Listens for PUT requests at <a href="/coffees{id}">/coffees/{id}</a>
+     * and updates coffee object if {id} found
+     * or creates coffee object if not-exists
+     *
+     * @return newly created json object {@link com.nixiedroid.rest.models.Coffee} on success
+     */
+    @PutMapping("/{id}")
+    ResponseEntity<Coffee> putCoffee(@PathVariable int id, @RequestBody Coffee coffee) {
+        if(coffeeRepository.existsById(id)){
+            return new ResponseEntity<>(coffeeRepository.save(coffee), HttpStatus.OK);
+        } else return new ResponseEntity<>(coffeeRepository.save(coffee), HttpStatus.CREATED);
+    }
+
+    /**
+     * Listens for DELETE requests at <a href="/coffees/{id}">/coffees/{id}</a>
+     * and deletes coffee object if {id} found
+     */
+
+    @DeleteMapping("/{id}")
+    void deleteCoffee(@PathVariable int id) {
+        coffeeRepository.deleteById(id);
+    }
+
 }

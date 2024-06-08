@@ -15,8 +15,6 @@ public class Init {
         }
 
         public Init() {
-                var c = new Coffee("CAppucino");
-                var a = new Coffee("Americano");
         }
 
 }
