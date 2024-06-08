@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,18 +25,14 @@ public class CoffeeController {
 
     /**
      * Coffee controller constructor
+     *
      * @param coffeeRepository is autowired by Spring
      */
 
-    //Can be omitted since Spring v4.3
+    //Autowired annotation can be omitted since Spring v4.3
     @Autowired
     public CoffeeController(CoffeeRepository coffeeRepository) {
         this.coffeeRepository = coffeeRepository;
-        this.coffeeRepository.saveAll(List.of(
-                new Coffee(1, "Americano"),
-                new Coffee(2, "Latte"),
-                new Coffee(3, "Cappuccino")
-        ));
     }
 
     /**
@@ -59,7 +54,7 @@ public class CoffeeController {
      */
     @GetMapping("/{id}")
     Optional<Coffee> getCoffeeById(@PathVariable int id) {
-       return coffeeRepository.findById(id);
+        return coffeeRepository.findById(id);
     }
 
     /**
@@ -70,7 +65,7 @@ public class CoffeeController {
      */
     @PostMapping
     Coffee addCoffee(@RequestBody Coffee coffee) {
-       return coffeeRepository.save(coffee);
+        return coffeeRepository.save(coffee);
     }
 
 
@@ -83,7 +78,7 @@ public class CoffeeController {
      */
     @PutMapping("/{id}")
     ResponseEntity<Coffee> putCoffee(@PathVariable int id, @RequestBody Coffee coffee) {
-        if(coffeeRepository.existsById(id)){
+        if (coffeeRepository.existsById(id)) {
             return new ResponseEntity<>(coffeeRepository.save(coffee), HttpStatus.OK);
         } else return new ResponseEntity<>(coffeeRepository.save(coffee), HttpStatus.CREATED);
     }
