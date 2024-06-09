@@ -2,7 +2,7 @@ package com.nixiedroid.rest.controllers;
 
 import com.nixiedroid.rest.interfaces.CoffeeRepository;
 import com.nixiedroid.rest.models.Coffee;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,24 +16,14 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/coffees")
+@AllArgsConstructor
 public class CoffeeController {
     /**
-     * Coffee repository accessor
+     * Coffee repository accessor <br>
+     * {@link org.springframework.beans.factory.annotation.Autowired}
      */
     private final CoffeeRepository coffeeRepository;
 
-
-    /**
-     * Coffee controller constructor
-     *
-     * @param coffeeRepository is autowired by Spring
-     */
-
-    //Autowired annotation can be omitted since Spring v4.3
-    @Autowired
-    public CoffeeController(CoffeeRepository coffeeRepository) {
-        this.coffeeRepository = coffeeRepository;
-    }
 
     /**
      * Listens for GET requests at <a href="/coffees">/coffees</a>

@@ -26,13 +26,10 @@ public class InitDatabase {
     @Autowired
     public InitDatabase(CoffeeRepository coffeeRepository) {
         this.coffeeRepository = coffeeRepository;
-        System.out.println(coffeeRepository.getClass().getSimpleName());
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void initRoutine() {
-        System.out.println("Init routine");
-        System.out.println(org.springframework.http.HttpStatus.valueOf(404).name());
         this.coffeeRepository.saveAll(List.of(
                 new Coffee(1, "Americano"),
                 new Coffee(2, "Latte"),
