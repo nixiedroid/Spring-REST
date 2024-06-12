@@ -12,7 +12,7 @@ import lombok.*;
  * Entity for database Access
  */
 
-//To avoid "no delegate- or property-based Creator" error during deserialisation
+//To avoid "no delegate- or property-based Creator" error during deserialization
 //And for proper JPA configuration
 @NoArgsConstructor
 
