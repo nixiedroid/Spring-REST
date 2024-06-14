@@ -2,7 +2,7 @@
 
 Currently running on https://spring.nixiedroid.com
 
-### SiteMap
+### SiteMap 
 - `/coffees`
     - **GET**: get list of coffees
     - **POST**: add coffee
