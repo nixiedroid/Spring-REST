@@ -15,7 +15,7 @@ import java.util.Optional;
  * @see com.nixiedroid.rest.models.Coffee
  */
 @RestController
-@RequestMapping("/coffees")
+@RequestMapping("/persons")
 @AllArgsConstructor
 public class PersonsController {
     /**
