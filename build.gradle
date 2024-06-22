@@ -8,18 +8,24 @@ java {
     group = "com.nixiedroid.rest"
     version = "1"
     sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
-bootJar {
-    from('build/classes/java/main/com/nixiedroid/rest/Preloader.class') {
-        into '/com/nixiedroid/rest'
+tasks.register('bootJarDebug') {
+    group = "build"
+    dependsOn(bootJar)
+    bootJar {
+        from('build/classes/java/main/com/nixiedroid/rest/Preloader.class') {
+            into '/com/nixiedroid/rest'
+        }
+        manifest {
+            attributes "Launcher-Agent-Class": "com.nixiedroid.rest.Preloader"
+        }
     }
-    manifest {
-        attributes "Launcher-Agent-Class": "com.nixiedroid.rest.Preloader"
-    }
+
 }
 
 repositories {
