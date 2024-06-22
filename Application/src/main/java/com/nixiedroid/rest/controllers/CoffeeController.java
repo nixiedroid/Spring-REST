@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Controller class for  <a href="/coffees">/coffees</a> endpoint
  *
- * @see com.nixiedroid.rest.models.Coffee
+ * @see Coffee
  */
 @RestController
 @RequestMapping("/coffees")
@@ -28,7 +28,7 @@ public class CoffeeController {
     /**
      * Listens for GET requests at <a href="/coffees">/coffees</a>
      *
-     * @return json list of {@link com.nixiedroid.rest.models.Coffee}
+     * @return json list of {@link Coffee}
      */
 
     //@RequestMapping(value = "/coffees", method = RequestMethod.GET)
@@ -40,7 +40,7 @@ public class CoffeeController {
     /**
      * Listens for GET requests at <a href="/coffees{id}">/coffees/{id}</a>
      *
-     * @return json object {@link com.nixiedroid.rest.models.Coffee} if {id} exists or null
+     * @return json object {@link Coffee} if {id} exists or null
      */
     @GetMapping("/{id}")
     Optional<Coffee> getCoffeeById(@PathVariable int id) {
@@ -51,7 +51,7 @@ public class CoffeeController {
      * Listens for POST requests at <a href="/coffees">/coffees</a>
      * and creates coffee object accordingly
      *
-     * @return newly created json object {@link com.nixiedroid.rest.models.Coffee} on success
+     * @return newly created json object {@link Coffee} on success
      */
     @PostMapping
     Coffee addCoffee(@RequestBody Coffee coffee) {
@@ -64,7 +64,7 @@ public class CoffeeController {
      * and updates coffee object if {id} found
      * or creates coffee object if not-exists
      *
-     * @return newly created json object {@link com.nixiedroid.rest.models.Coffee} on success
+     * @return newly created json object {@link Coffee} on success
      */
     @PutMapping("/{id}")
     ResponseEntity<Coffee> putCoffee(@PathVariable int id, @RequestBody Coffee coffee) {

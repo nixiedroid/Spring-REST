@@ -1,7 +1,6 @@
 package com.nixiedroid.rest.listeners;
 
 import com.nixiedroid.rest.interfaces.CoffeeRepository;
-import com.nixiedroid.rest.models.Coffee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -30,11 +29,11 @@ public class InitListener {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initRoutine() {
-        this.coffeeRepository.saveAll(List.of(
-                new Coffee(1, "Americanfo"),
-                new Coffee(2, "Latte"),
-                new Coffee(3, "Cappuccino")
-        ));
+//        this.coffeeRepository.saveAll(List.of(
+//                new Coffeew(1, "Americanfo"),
+//                new Coffeew(2, "Latte"),
+//                new Coffeew(3, "Cappuccino")
+//        ));
     }
 
 }
