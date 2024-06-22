@@ -13,6 +13,15 @@ java {
     }
 }
 
+bootJar {
+    from('build/classes/java/main/com/nixiedroid/rest/Preloader.class') {
+        into '/com/nixiedroid/rest'
+    }
+    manifest {
+        attributes "Launcher-Agent-Class": "com.nixiedroid.rest.Preloader"
+    }
+}
+
 repositories {
     mavenCentral()
 }

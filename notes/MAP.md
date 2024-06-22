@@ -1,0 +1,6 @@
+-  [Git Actions](ACTIONS.md)
+-  [Docker](Docker.md)
+-  [Idea bugfix](REBUILD_ON_FOCUS_LOST.md)
+-  [Rest API](REST.md)
+-  [SQL setup](SQL.md)
+- [Spring startup log](StartupLog.txt)

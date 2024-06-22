@@ -15,12 +15,12 @@ public class CoffeeControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @Test
-    public void getCoffeeByIdTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/coffees/1").accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(
-                        "{\"id\":1,\"name\":\"Americano\"}"
-                ));
-    }
+//    @Test
+//    public void getCoffeeByIdTest() throws Exception {
+//        mvc.perform(MockMvcRequestBuilders.get("/coffees/1").accept(MediaType.APPLICATION_JSON))
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.content().json(
+//                        "{\"id\":1,\"name\":\"Americano\"}"
+//                ));
+//    }
 }

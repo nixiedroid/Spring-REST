@@ -19,3 +19,6 @@ Currently running on https://spring.nixiedroid.com
       - **GET**
     - `/mappings`
         - **GET**
+    
+### Notes
+see [MAP](notes/MAP.md)
