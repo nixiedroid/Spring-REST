@@ -1,8 +1,9 @@
 package com.nixiedroid.rest.controllers;
 
-import com.nixiedroid.rest.interfaces.CoffeeRepository;
+import com.nixiedroid.rest.dto.CoffeeDTO;
 import com.nixiedroid.rest.models.Coffee;
-import lombok.AllArgsConstructor;
+import com.nixiedroid.rest.services.CoffeeSvc;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,28 +14,28 @@ import java.util.Optional;
  * Controller class for  <a href="/coffees">/coffees</a> endpoint
  *
  * @see Coffee
+ * @see CoffeeDTO
  */
 @RestController
 @RequestMapping("/coffees")
-@AllArgsConstructor
 public class CoffeeController {
-    /**
-     * Coffee repository accessor <br>
-     * {@link org.springframework.beans.factory.annotation.Autowired}
-     */
-    private final CoffeeRepository coffeeRepository;
 
+    CoffeeSvc svc;
+
+    @Autowired
+    CoffeeController(CoffeeSvc svc) {
+        this.svc = svc;
+    }
 
     /**
      * Listens for GET requests at <a href="/coffees">/coffees</a>
      *
      * @return json list of {@link Coffee}
      */
-
     //@RequestMapping(value = "/coffees", method = RequestMethod.GET)
     @GetMapping
-    Iterable<Coffee> getCoffees() {
-        return coffeeRepository.findAll();
+    Iterable<CoffeeDTO> getCoffees() {
+        return svc.findAll();
     }
 
     /**
@@ -43,8 +44,8 @@ public class CoffeeController {
      * @return json object {@link Coffee} if {id} exists or null
      */
     @GetMapping("/{id}")
-    Optional<Coffee> getCoffeeById(@PathVariable int id) {
-        return coffeeRepository.findById(id);
+    Optional<CoffeeDTO> getCoffeeById(@PathVariable int id) {
+        return svc.findById(id);
     }
 
     /**
@@ -54,8 +55,8 @@ public class CoffeeController {
      * @return newly created json object {@link Coffee} on success
      */
     @PostMapping
-    Coffee addCoffee(@RequestBody Coffee coffee) {
-        return coffeeRepository.save(coffee);
+    CoffeeDTO addCoffee(@RequestBody CoffeeDTO coffee) {
+        return svc.save(coffee);
     }
 
 
@@ -67,10 +68,10 @@ public class CoffeeController {
      * @return newly created json object {@link Coffee} on success
      */
     @PutMapping("/{id}")
-    ResponseEntity<Coffee> putCoffee(@PathVariable int id, @RequestBody Coffee coffee) {
-        if (coffeeRepository.existsById(id)) {
-            return new ResponseEntity<>(coffeeRepository.save(coffee), HttpStatus.OK);
-        } else return new ResponseEntity<>(coffeeRepository.save(coffee), HttpStatus.CREATED);
+    ResponseEntity<CoffeeDTO> putCoffee(@PathVariable int id, @RequestBody CoffeeDTO coffee) {
+        if (svc.existsById(id)) {
+            return new ResponseEntity<>(svc.save(coffee), HttpStatus.OK);
+        } else return new ResponseEntity<>(svc.save(coffee), HttpStatus.CREATED);
     }
 
     /**
@@ -80,7 +81,7 @@ public class CoffeeController {
 
     @DeleteMapping("/{id}")
     void deleteCoffee(@PathVariable int id) {
-        coffeeRepository.deleteById(id);
+        svc.deleteById(id);
     }
 
 }

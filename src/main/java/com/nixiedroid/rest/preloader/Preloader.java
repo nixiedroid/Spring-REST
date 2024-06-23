@@ -1,7 +1,6 @@
-package com.nixiedroid.rest;
+package com.nixiedroid.rest.preloader;
 
 import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
 
@@ -22,7 +21,7 @@ public class Preloader implements ClassFileTransformer {
                             ProtectionDomain protectionDomain,
                             byte[] classfileBuffer) {
         if (className.startsWith(classPrefix)) {
-            System.out.println("Loaded [" + className + "] from module: " + module.getName());
+            System.out.println("Loaded [" + className + "] from module: [" + module.getName() +" ]" );
         }
         return null;
     }

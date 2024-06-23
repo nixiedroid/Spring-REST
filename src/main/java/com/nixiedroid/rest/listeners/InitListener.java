@@ -29,6 +29,8 @@ public class InitListener {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initRoutine() {
+
+
 //        this.coffeeRepository.saveAll(List.of(
 //                new Coffeew(1, "Americanfo"),
 //                new Coffeew(2, "Latte"),

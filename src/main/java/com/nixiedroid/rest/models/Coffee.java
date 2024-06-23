@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Generated;
 
 import java.time.Instant;
 
@@ -13,8 +14,8 @@ import java.time.Instant;
 @Table(name = "coffees", schema = "site")
 public class Coffee {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "coffees_id_gen")
-    @SequenceGenerator(name = "coffees_id_gen", sequenceName = "coffee_list_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@SequenceGenerator(name = "coffees_id_gen", sequenceName = "coffee_list_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -25,6 +26,7 @@ public class Coffee {
     @Column(name = "has_milk")
     private Boolean hasMilk;
 
+    @Generated
     @ColumnDefault("now()")
     @Column(name = "created")
     private Instant created;

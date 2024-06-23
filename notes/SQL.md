@@ -16,7 +16,7 @@ CREATE TABLE site.users (
 id bigserial PRIMARY KEY,
 first_name varchar(100) NOT NULL,
 last_name varchar(100) NOT NULL,
-created timestamp default now() 
+created timestamp default now() NOT NULL 
 );
 INSERT INTO site.users (first_name,last_name) values ('Susie', 'McElory');
 INSERT INTO site.users (first_name,last_name) values ('Nonna', 'Igonet');
