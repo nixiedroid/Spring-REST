@@ -12,3 +12,15 @@ docker images
 docker run -p 8086:8086 nixedroid/spring
 sudo lsof -i -P -n | grep LISTEN
 ```
+
+
+Or, get from actions
+
+```shell
+docker pull ghcr.io/nixiedroid/spring-rest:master
+docker images
+docker run --name spring-rest -d -p 8086:8080 ghcr.io/nixiedroid/spring-rest:master
+#docker start spring-rest
+docker ps
+docker attach spring-rest
+```

@@ -7,6 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Generated;
 
 import java.time.Instant;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,4 +32,12 @@ public class Coffee {
     @Column(name = "created")
     private Instant created;
 
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(
+            schema = "site",
+            name = "favourite_coffees",
+            joinColumns = @JoinColumn(name = "coffee_id",referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id",referencedColumnName="id")
+    )
+    private Set<User> likedBy;
 }

@@ -8,7 +8,7 @@ import org.springframework.data.repository.ListCrudRepository;
  * Where Coffee is item, and Integer is key
  * CRUD Repository provides
  * Create - Read - Update - Delete operations.
- * Can by easily mapped onto REST Api idea.
+ * Can easily be mapped onto REST Api idea.
  */
 public interface CoffeeRepository extends ListCrudRepository<Coffee,Long> {
         Coffee findDistinctByNameAndHasMilk(String name, Boolean hasMilk);

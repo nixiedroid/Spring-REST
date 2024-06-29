@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Generated;
 
 import java.time.Instant;
 import java.util.LinkedHashSet;
@@ -15,8 +16,7 @@ import java.util.Set;
 @Table(name = "users", schema = "site")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_gen")
-    @SequenceGenerator(name = "users_id_gen", sequenceName = "users_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -26,11 +26,12 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
+    @Generated
     @ColumnDefault("now()")
     @Column(name = "created")
     private Instant created;
 
-    @OneToMany(mappedBy = "user")
-    private Set<FavouriteCoffee> favouriteCoffees = new LinkedHashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "likedBy",fetch = FetchType.EAGER  )
+    private Set<Coffee> favCoffees = new LinkedHashSet<>();
 
 }

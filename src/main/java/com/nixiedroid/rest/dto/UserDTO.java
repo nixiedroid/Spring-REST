@@ -1,18 +1,10 @@
 package com.nixiedroid.rest.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.Set;
 
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-public class UserDTO {
-
-    String firstName;
-    String lastName;
-
+public record UserDTO(
+        String firstName,
+        String lastName,
+        Set<CoffeeDTOPlain> favCoffees
+) {
 }
