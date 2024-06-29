@@ -44,7 +44,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Gradle build package
-        run: ./gradlew bootJar
+        run: chmod +x ./gradlew &&  ./gradlew bootJar
 
       - name: Build and push Docker image
         id: push
