@@ -4,3 +4,4 @@
 -  [Rest API](REST.md)
 -  [SQL setup](SQL.md)
 - [Spring startup log](StartupLog.txt)
+- [Spring info](SPRING.md)
