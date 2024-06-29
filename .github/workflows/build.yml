@@ -26,6 +26,12 @@ jobs:
     timeout-minutes: 5
     runs-on: ubuntu-latest
 
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
