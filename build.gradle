@@ -4,6 +4,10 @@ plugins {
     id("io.spring.dependency-management") version "1.1.4"
 }
 
+ext {
+    springCloudVersion = "2023.0.2"
+}
+
 java {
     group = "com.nixiedroid.rest"
     version = "1"
@@ -37,6 +41,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.testng:testng:7.7.0'
     compileOnly("org.projectlombok:lombok")
@@ -51,4 +56,10 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
 }

@@ -1,19 +1,24 @@
 package com.nixiedroid.rest.controllers;
 
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-
-
+@RestControllerAdvice
 public class ErrorController {
-    @RequestMapping(method = {GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACE})
-    public String error() {
-        return "Unknown error occurred. No extra information available";
+
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<?> AnyException() {
+        return ResponseEntity
+                .internalServerError()
+                .body("Bad Request");
     }
 
-    @ExceptionHandler
-    public String exception() {
-        return "Unknown error occurred. No extra information available";
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<?> exception() {
+        return ResponseEntity
+                .badRequest()
+                .body("Bad Request");
     }
+
 }
