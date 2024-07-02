@@ -69,7 +69,7 @@ public class UserSvc  implements Validator {
             u = new User();
             u.setFirstName(dto.firstName());
             u.setLastName(dto.lastName());
-            u.setFavCoffees(dto.favCoffees().stream()
+            u.addFavCoffeeAll(dto.favCoffees().stream()
                     .map(c -> coffeeRepo.findDistinctByNameAndHasMilk(c.name(),c.hasMilk()))
                     .collect(Collectors.toSet()));
             return u;

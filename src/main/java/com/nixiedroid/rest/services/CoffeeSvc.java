@@ -69,7 +69,7 @@ public class CoffeeSvc implements Validator {
             c = new Coffee();
             c.setName(dto.name());
             c.setHasMilk(dto.hasMilk());
-            c.setLikedBy(dto.likedBy().stream()
+            c.addLikedByAll(dto.likedBy().stream()
                     .map(u -> userRepo.findDistinctByFirstNameAndLastName(u.firstName(), u.lastName()))
                     .collect(Collectors.toSet()));
             return c;

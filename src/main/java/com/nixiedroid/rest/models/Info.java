@@ -11,4 +11,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class Info {
     private String version;
     private String name;
+    private Environment env;
 }
