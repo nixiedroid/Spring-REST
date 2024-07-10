@@ -6,10 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Generated;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -52,13 +49,12 @@ public class Coffee {
     @EqualsAndHashCode.Exclude
     private Set<User> likedBy = new HashSet<>();
 
+    @Column(name = "uid", nullable = false)
+    private UUID uuid;
+
 
     void addLikedBy0(User u) {
         this.likedBy.add(u);
-    }
-
-    void removeLikedBy0(User u) {
-        this.likedBy.remove(u);
     }
 
     public void addLikedByAll(Collection<? extends User> us) {
@@ -70,13 +66,4 @@ public class Coffee {
         return Collections.unmodifiableSet(likedBy);
     }
 
-    public void addLikedBy(User u) {
-        this.likedBy.add(u);
-        u.addFavCoffee0(THIS);
-    }
-
-    public void removeLikedBy(User u) {
-        this.likedBy.remove(u);
-        u.removeFavCoffee0(THIS);
-    }
 }

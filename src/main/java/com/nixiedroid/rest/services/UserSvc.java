@@ -8,14 +8,17 @@ import com.nixiedroid.rest.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserSvc  implements Validator {
 
     private final UserRepository userRepo;
@@ -33,18 +36,20 @@ public class UserSvc  implements Validator {
         return userRepo.findAll().stream().map(this::convertToDTO).toList();
     }
 
-    public Optional<UserDTO> findById(long id){
-        return userRepo.findById(id).map(this::convertToDTO);
+    public Optional<UserDTO> findByUUID(UUID uuid){
+        return userRepo.findDistinctByUuid(uuid).map(this::convertToDTO);
     }
 
-    public boolean existsById(long id){
-        return userRepo.existsById(id);
+    public boolean existsByUUID(UUID uuid){
+        return userRepo.existsByUuid(uuid);
     }
-    public void deleteById(long id){
-        userRepo.deleteById(id);
+    public void deleteByUUID(UUID uuid){
+        userRepo.deleteByUuid(uuid);
     }
 
     public UserDTO save(UserDTO UserDTO) {
+
+
         User User = convertToEntity(UserDTO);
         return convertToDTO(userRepo.save(User));
     }
@@ -54,27 +59,49 @@ public class UserSvc  implements Validator {
     private UserDTO convertToDTO(User user) {
         if (user == null) return null;
         return new UserDTO(
+                user.getUuid(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getFavCoffees().stream()
-                        .map(c -> new CoffeeDTOPlain(c.getName(),c.getHasMilk()))
+                        .map(c -> new CoffeeDTOPlain(
+                                c.getUuid(),
+                                c.getName(),
+                                c.getHasMilk()
+                        ))
                         .collect(Collectors.toSet())
         );
     }
 
     private User convertToEntity(UserDTO dto) {
-        if (dto == null) return null;
-        User u = userRepo.findDistinctByFirstNameAndLastName(dto.firstName(),dto.lastName());
-        if (u == null){
+        if (dto == null) throw new NullPointerException();
+        //Check if we should insert or update user
+        Optional<User> userFromDB = Optional.empty();
+        if (dto.uuid() != null) {
+            userFromDB = userRepo.findDistinctByUuid(dto.uuid());
+        }
+        User u;
+        if (userFromDB.isEmpty()){ //Insert sequence
             u = new User();
+            u.setUuid(UUID.randomUUID()); //Generate Random UUID
             u.setFirstName(dto.firstName());
             u.setLastName(dto.lastName());
             u.addFavCoffeeAll(dto.favCoffees().stream()
-                    .map(c -> coffeeRepo.findDistinctByNameAndHasMilk(c.name(),c.hasMilk()))
+                    .map(c -> coffeeRepo.findDistinctByUuid(c.uuid()))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
                     .collect(Collectors.toSet()));
             return u;
+        }  else { //Update Sequence
+            u = userFromDB.get();
+            u.setFirstName(dto.firstName());
+            u.setLastName(dto.lastName());
+            u.addFavCoffeeAll(dto.favCoffees().stream()
+                    .map(c -> coffeeRepo.findDistinctByUuid(c.uuid()))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet()));
         }
-            return u;
+            return userFromDB.get();
     }
 
     @Override

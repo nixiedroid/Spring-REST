@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Controller class for  <a href="/Users">/Users</a> endpoint
@@ -44,9 +45,9 @@ public class UserController {
      *
      * @return json object {@link User} if {id} exists or null
      */
-    @GetMapping("/{id}")
-    Optional<UserDTO> getUserById(@PathVariable int id) {
-        return svc.findById(id);
+    @GetMapping("/{uuid}")
+    Optional<UserDTO> getUserByUuid(@PathVariable String uuid) {
+        return svc.findByUUID(convertToUUID(uuid));
     }
 
     /**
@@ -56,6 +57,7 @@ public class UserController {
      * @return newly created json object {@link User} on success
      */
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     UserDTO addUser(@RequestBody UserDTO User) {
         return svc.save(User);
     }
@@ -68,9 +70,9 @@ public class UserController {
      *
      * @return newly created json object {@link User} on success
      */
-    @PutMapping("/{id}")
-    ResponseEntity<UserDTO> putUser(@PathVariable int id, @RequestBody UserDTO User) {
-        if (svc.existsById(id)) {
+    @PutMapping("/{uuid}")
+    ResponseEntity<UserDTO> putUser(@PathVariable String uuid, @RequestBody UserDTO User) {
+        if (svc.existsByUUID(convertToUUID(uuid))) {
             return new ResponseEntity<>(svc.save(User), HttpStatus.OK);
         } else return new ResponseEntity<>(svc.save(User), HttpStatus.CREATED);
     }
@@ -80,9 +82,21 @@ public class UserController {
      * and deletes User object if {id} found
      */
 
-    @DeleteMapping("/{id}")
-    void deleteUser(@PathVariable int id) {
-        svc.deleteById(id);
+    @DeleteMapping("/{uuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    ResponseEntity<Void> deleteUser(@PathVariable String  uuid) {
+        if (svc.existsByUUID(convertToUUID(uuid))) {
+            svc.deleteByUUID(convertToUUID(uuid));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    private static final UUID EMPTY_UUID = new UUID(0,0);
+    private UUID convertToUUID(String uuid){
+        try {
+            return UUID.fromString(uuid);
+        } catch (IllegalArgumentException ignored){
+            return EMPTY_UUID;
+        }
+    }
 }

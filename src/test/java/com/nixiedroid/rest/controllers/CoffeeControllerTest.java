@@ -1,26 +1,29 @@
 package com.nixiedroid.rest.controllers;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import com.nixiedroid.rest.interfaces.CoffeeRepository;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.mockito.Mockito.mock;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+//@WebMvcTest(CoffeeController.class)
 public class CoffeeControllerTest {
-    @Autowired
+
     private MockMvc mvc;
+    private CoffeeRepository cR = mock(CoffeeRepository.class);
+
+
 
 //    @Test
 //    public void getCoffeeByIdTest() throws Exception {
-//        mvc.perform(MockMvcRequestBuilders.get("/coffees/1").accept(MediaType.APPLICATION_JSON))
+//
+//
+//        mvc.perform(get("/coffees/1").accept(MediaType.APPLICATION_JSON))
 //                .andExpect(MockMvcResultMatchers.status().isOk())
 //                .andExpect(MockMvcResultMatchers.content().json(
 //                        "{\"id\":1,\"name\":\"Americano\"}"
 //                ));
 //    }
 }
+

@@ -32,6 +32,10 @@ tasks.register('bootJarDebug') {
 
 }
 
+compileJava{
+    options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+}
+
 repositories {
     mavenCentral()
 }
@@ -42,10 +46,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.testng:testng:7.7.0'
     compileOnly("org.projectlombok:lombok")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

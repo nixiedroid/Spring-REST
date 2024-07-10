@@ -6,10 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Generated;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -49,17 +46,12 @@ public class User {
     @EqualsAndHashCode.Exclude
     private Set<Coffee> favCoffees = new HashSet<>();
 
+    @Column(name = "uid", nullable = false)
+    private UUID uuid;
+
+
     void addFavCoffee0(Coffee c) {
         this.favCoffees.add(c);
-    }
-
-    void removeFavCoffee0(Coffee c) {
-        this.favCoffees.remove(c);
-    }
-
-    public void addFavCoffee(Coffee c) {
-        this.favCoffees.add(c);
-        c.addLikedBy0(THIS);
     }
 
     public Set<Coffee> getFavCoffees() {
@@ -71,8 +63,4 @@ public class User {
         cs.forEach(c -> c.addLikedBy0(THIS));
     }
 
-    public void removeFavCoffee(Coffee c) {
-        this.favCoffees.remove(c);
-        c.removeLikedBy0(THIS);
-    }
 }
