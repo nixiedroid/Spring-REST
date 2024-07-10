@@ -1,17 +1,19 @@
-### Что такое Spring?
+### What IS Spring?
 
-- Spring работает по принципу
-  инверсии управления (inversion of control, IoC):
-  вместо того чтобы приложение
-  само контролировало свое выполнение, управление
-  передается некоторому
-  другому программному обеспечению — в данном
-  случае фреймворку Spring
-  Посредством системы настроек мы предоставляем
-  фреймворку инструкции
-  о том, как распоряжаться написанным нами кодом,
-  что и определяет логику
-  работы приложения. Именно это и подразумевается
-  под «инверсией» в аббревиатуре IoC
-    - Без  IoC приложение выполняет само себя и использует зависимости по мере необходимости
-    - С IoC приложение выполняется в контексте зависимости (фреймворка Spring Core)
+At its core, Spring offers a *container*, often
+referred to as the Spring *application context*,
+that creates and manages application components.
+These components, or beans,
+are wired together inside the Spring application
+context to make a complete application, much like
+bricks, mortar, timber, nails, plumbing, and
+wiring are bound together
+to make a house
+
+
+The act of wiring beans together is based on a pattern known as dependency injection
+(DI). Rather than have components create and maintain the life cycle of other beans
+that they depend on, a dependency-injected application relies on a separate entity
+(the container) to create and maintain all components and inject those into the beans
+that need them. This is done typically through constructor arguments or property
+accessor methods.

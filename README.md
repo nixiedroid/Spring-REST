@@ -3,6 +3,12 @@
 Currently running on https://spring.nixiedroid.com
 
 ### SiteMap 
+
+```mermaid
+flowchart LR
+Start --> Stop
+```
+
 - `/coffees`
     - **GET**: get list of coffees
     - **POST**: add coffee

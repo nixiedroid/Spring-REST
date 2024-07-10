@@ -96,6 +96,7 @@ public class UsersTest {
         cR.save(c1);
         cR.save(c2);
 
+
         user1 = uR.findById(user1.getId()).orElse(null);
         user2 = uR.findById(user2.getId()).orElse(null);
 
