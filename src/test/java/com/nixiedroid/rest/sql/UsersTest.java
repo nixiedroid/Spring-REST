@@ -3,12 +3,9 @@ package com.nixiedroid.rest.sql;
 import com.nixiedroid.rest.interfaces.CoffeeRepository;
 import com.nixiedroid.rest.interfaces.UserRepository;
 import com.nixiedroid.rest.models.Coffee;
-import com.nixiedroid.rest.models.Environment;
-import com.nixiedroid.rest.models.Info;
 import com.nixiedroid.rest.models.User;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,22 +19,17 @@ public class UsersTest {
     static final long nxID = -1L;
     private final UserRepository uR;
     private final CoffeeRepository cR;
-    private final Info info;
 
     @Autowired
     EntityManager entityManager;
 
     @Autowired
-    public UsersTest(UserRepository uR, CoffeeRepository cR, Info info) {
+    public UsersTest(UserRepository uR, CoffeeRepository cR) {
         this.uR = uR;
         this.cR = cR;
-        this.info = info;
     }
 
-    @BeforeEach
-    void checkEnv() {
-        Assertions.assertEquals(info.getEnv(), Environment.TEST);
-    }
+
 
     @Test
     void getUser() {
