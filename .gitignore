@@ -5,7 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 src/main/resources/application-psql.properties
-src/main/resources/application-prod.properties
+src/main/resources/application-owm.properties
 
 ### STS ###
 .apt_generated

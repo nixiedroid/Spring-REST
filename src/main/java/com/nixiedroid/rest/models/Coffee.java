@@ -1,9 +1,23 @@
 package com.nixiedroid.rest.models;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Generated;
+
 
 import java.time.Instant;
 import java.util.*;
@@ -42,24 +56,26 @@ public class Coffee {
     @Setter(AccessLevel.NONE)
     private Instant created;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+    },fetch = FetchType.LAZY)
     @JoinTable(schema = "site", name = "favourite_coffees", joinColumns = @JoinColumn(name = "coffee_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<User> likedBy = new HashSet<>();
 
-    @Column(name = "uid", nullable = false)
-    private UUID uuid;
 
-
-    void addLikedBy0(User u) {
+    void addLikedBy(User u) {
         this.likedBy.add(u);
     }
 
     public void addLikedByAll(Collection<? extends User> us) {
         this.likedBy.addAll(us);
-        us.forEach(u-> u.addFavCoffee0(THIS));
+        us.forEach(u-> u.addFavCoffee(THIS));
     }
 
     public Set<User> getLikedBy() {

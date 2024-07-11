@@ -13,7 +13,7 @@ import org.springframework.validation.Validator;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.lang.Long;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,16 +37,16 @@ public class CoffeeSvc implements Validator {
         return coffeeRepo.findAll().stream().map(this::convertToDTO).toList();
     }
 
-    public Optional<CoffeeDTO> findByUUID(UUID uuid){
-        return coffeeRepo.findDistinctByUuid(uuid).map(this::convertToDTO);
+    public Optional<CoffeeDTO> findById(Long id){
+        return coffeeRepo.findDistinctById(id).map(this::convertToDTO);
     }
 
-    public boolean existsByUUID(UUID uuid){
-        return coffeeRepo.existsByUuid(uuid);
+    public boolean existsById(Long id){
+        return coffeeRepo.existsById(id);
     }
-    public void deleteByUUID(UUID uuid){
+    public void deleteById(Long id){
 
-        coffeeRepo.deleteByUuid(uuid);
+        coffeeRepo.deleteById(id);
     }
 
     public CoffeeDTO save(CoffeeDTO coffeeDTO) {
@@ -57,12 +57,12 @@ public class CoffeeSvc implements Validator {
     private CoffeeDTO convertToDTO(Coffee coffee) {
         if (coffee == null) return null;
         return new CoffeeDTO(
-                coffee.getUuid(),
+                coffee.getId(),
                 coffee.getName(),
                 coffee.getHasMilk(),
                 coffee.getLikedBy().stream()
                         .map(u -> new UserDTOPlain(
-                                u.getUuid(),
+                                u.getId(),
                                 u.getFirstName(),
                                 u.getLastName())
                         )
@@ -74,17 +74,16 @@ public class CoffeeSvc implements Validator {
         if (dto == null) throw new NullPointerException();
         //Check if we should insert or update coffee
         Optional<Coffee> coffeeFromDB = Optional.empty();
-        if (dto.uuid() != null) {
-            coffeeFromDB = coffeeRepo.findDistinctByUuid(dto.uuid());
+        if (dto.id() != null) {
+            coffeeFromDB = coffeeRepo.findDistinctById(dto.id());
         }
         Coffee c;
         if (coffeeFromDB.isEmpty()) { //Insert sequence
             c = new Coffee();
-            c.setUuid(UUID.randomUUID()); //Generate Random UUID
             c.setName(dto.name());
             c.setHasMilk(dto.hasMilk());
             c.addLikedByAll(dto.likedBy().stream()
-                    .map(u -> userRepo.findDistinctByUuid(u.uuid()))
+                    .map(u -> userRepo.findDistinctById(u.id()))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet()));
@@ -94,7 +93,7 @@ public class CoffeeSvc implements Validator {
             c.setName(dto.name());
             c.setHasMilk(dto.hasMilk());
             c.addLikedByAll(dto.likedBy().stream()
-                    .map(u -> userRepo.findDistinctByUuid(u.uuid()))
+                    .map(u -> userRepo.findDistinctById(u.id()))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet()));

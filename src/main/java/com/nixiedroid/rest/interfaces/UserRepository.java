@@ -5,11 +5,11 @@ import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
+import java.lang.Long;
 
 @Repository
 public interface UserRepository extends ListCrudRepository<User,Long> {
-    Optional<User> findDistinctByUuid(UUID uuid);
-    boolean existsByUuid(UUID uuid);
-    void deleteByUuid(UUID uuid);
+    Optional<User> findDistinctById(Long id);
+    boolean existsById(Long id);
+    void deleteById(Long id);
 }

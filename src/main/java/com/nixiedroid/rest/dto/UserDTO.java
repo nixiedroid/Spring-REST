@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.Set;
-import java.util.UUID;
+import java.lang.Long;
 
 public record UserDTO(
-        UUID uuid,
+        Long id,
         @NotNull
         @Size(min=1, message="First name must be at least 1 characters long")
         String firstName,

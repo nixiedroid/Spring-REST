@@ -1,9 +1,9 @@
 package com.nixiedroid.rest.dto;
 
-import java.util.UUID;
+import java.lang.Long;
 
 public record UserDTOPlain(
-        UUID uuid,
+        Long id,
         String firstName,
         String lastName
 ) {

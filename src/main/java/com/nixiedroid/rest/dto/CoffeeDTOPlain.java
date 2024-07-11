@@ -1,9 +1,9 @@
 package com.nixiedroid.rest.dto;
 
-import java.util.UUID;
+import java.lang.Long;
 
 public record CoffeeDTOPlain(
-        UUID uuid,
+        Long id,
         String name,
         boolean hasMilk
 ) {

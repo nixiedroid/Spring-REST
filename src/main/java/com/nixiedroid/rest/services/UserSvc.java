@@ -14,7 +14,7 @@ import org.springframework.validation.Validator;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.lang.Long;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,15 +36,15 @@ public class UserSvc  implements Validator {
         return userRepo.findAll().stream().map(this::convertToDTO).toList();
     }
 
-    public Optional<UserDTO> findByUUID(UUID uuid){
-        return userRepo.findDistinctByUuid(uuid).map(this::convertToDTO);
+    public Optional<UserDTO> findById(Long id){
+        return userRepo.findDistinctById(id).map(this::convertToDTO);
     }
 
-    public boolean existsByUUID(UUID uuid){
-        return userRepo.existsByUuid(uuid);
+    public boolean existsById(Long id){
+        return userRepo.existsById(id);
     }
-    public void deleteByUUID(UUID uuid){
-        userRepo.deleteByUuid(uuid);
+    public void deleteById(Long id){
+        userRepo.deleteById(id);
     }
 
     public UserDTO save(UserDTO UserDTO) {
@@ -59,12 +59,12 @@ public class UserSvc  implements Validator {
     private UserDTO convertToDTO(User user) {
         if (user == null) return null;
         return new UserDTO(
-                user.getUuid(),
+                user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getFavCoffees().stream()
                         .map(c -> new CoffeeDTOPlain(
-                                c.getUuid(),
+                                c.getId(),
                                 c.getName(),
                                 c.getHasMilk()
                         ))
@@ -76,17 +76,16 @@ public class UserSvc  implements Validator {
         if (dto == null) throw new NullPointerException();
         //Check if we should insert or update user
         Optional<User> userFromDB = Optional.empty();
-        if (dto.uuid() != null) {
-            userFromDB = userRepo.findDistinctByUuid(dto.uuid());
+        if (dto.id() != null) {
+            userFromDB = userRepo.findDistinctById(dto.id());
         }
         User u;
         if (userFromDB.isEmpty()){ //Insert sequence
             u = new User();
-            u.setUuid(UUID.randomUUID()); //Generate Random UUID
             u.setFirstName(dto.firstName());
             u.setLastName(dto.lastName());
             u.addFavCoffeeAll(dto.favCoffees().stream()
-                    .map(c -> coffeeRepo.findDistinctByUuid(c.uuid()))
+                    .map(c -> coffeeRepo.findDistinctById(c.id()))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet()));
@@ -96,7 +95,7 @@ public class UserSvc  implements Validator {
             u.setFirstName(dto.firstName());
             u.setLastName(dto.lastName());
             u.addFavCoffeeAll(dto.favCoffees().stream()
-                    .map(c -> coffeeRepo.findDistinctByUuid(c.uuid()))
+                    .map(c -> coffeeRepo.findDistinctById(c.id()))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet()));

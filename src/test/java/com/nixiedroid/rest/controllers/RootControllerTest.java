@@ -16,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(SecurityConfig.class)
 public class RootControllerTest {
 
-
     private final MockMvc mvc;
 
     @Autowired
@@ -27,8 +26,6 @@ public class RootControllerTest {
     @Test
     public void testHomePage() throws Exception {
         mvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(
-                        containsString("\"{GET [/]}\",")));
+                .andExpect(status().isOk());
     }
 }

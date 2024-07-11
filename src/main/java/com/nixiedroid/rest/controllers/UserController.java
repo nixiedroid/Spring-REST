@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.UUID;
+import java.lang.Long;
 
 /**
  * Controller class for  <a href="/Users">/Users</a> endpoint
@@ -45,9 +45,9 @@ public class UserController {
      *
      * @return json object {@link User} if {id} exists or null
      */
-    @GetMapping("/{uuid}")
-    Optional<UserDTO> getUserByUuid(@PathVariable String uuid) {
-        return svc.findByUUID(convertToUUID(uuid));
+    @GetMapping("/{id}")
+    Optional<UserDTO> getUserById(@PathVariable Long id) {
+        return svc.findById(id);
     }
 
     /**
@@ -70,9 +70,9 @@ public class UserController {
      *
      * @return newly created json object {@link User} on success
      */
-    @PutMapping("/{uuid}")
-    ResponseEntity<UserDTO> putUser(@PathVariable String uuid, @RequestBody UserDTO User) {
-        if (svc.existsByUUID(convertToUUID(uuid))) {
+    @PutMapping("/{id}")
+    ResponseEntity<UserDTO> putUser(@PathVariable Long id, @RequestBody UserDTO User) {
+        if (svc.existsById(id)) {
             return new ResponseEntity<>(svc.save(User), HttpStatus.OK);
         } else return new ResponseEntity<>(svc.save(User), HttpStatus.CREATED);
     }
@@ -82,21 +82,13 @@ public class UserController {
      * and deletes User object if {id} found
      */
 
-    @DeleteMapping("/{uuid}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    ResponseEntity<Void> deleteUser(@PathVariable String  uuid) {
-        if (svc.existsByUUID(convertToUUID(uuid))) {
-            svc.deleteByUUID(convertToUUID(uuid));
+    ResponseEntity<Void> deleteUser(@PathVariable Long  id) {
+        if (svc.existsById(id)) {
+            svc.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
-    private static final UUID EMPTY_UUID = new UUID(0,0);
-    private UUID convertToUUID(String uuid){
-        try {
-            return UUID.fromString(uuid);
-        } catch (IllegalArgumentException ignored){
-            return EMPTY_UUID;
-        }
-    }
+    
 }

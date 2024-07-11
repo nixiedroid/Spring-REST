@@ -6,7 +6,10 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Generated;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -40,17 +43,19 @@ public class User {
     @Setter(AccessLevel.NONE)
     private Instant created;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "likedBy", fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+    }, mappedBy = "likedBy", fetch = FetchType.LAZY)
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<Coffee> favCoffees = new HashSet<>();
 
-    @Column(name = "uid", nullable = false)
-    private UUID uuid;
 
-
-    void addFavCoffee0(Coffee c) {
+    void addFavCoffee(Coffee c) {
         this.favCoffees.add(c);
     }
 
@@ -60,7 +65,7 @@ public class User {
 
     public void addFavCoffeeAll(Collection<? extends Coffee> cs) {
         this.favCoffees.addAll(cs);
-        cs.forEach(c -> c.addLikedBy0(THIS));
+        cs.forEach(c -> c.addLikedBy(THIS));
     }
 
 }

@@ -6,30 +6,39 @@ import com.nixiedroid.rest.models.Coffee;
 import com.nixiedroid.rest.models.User;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
 
 @SpringBootTest
 @org.springframework.transaction.annotation.Transactional
-public class UsersTest {
+public class SqlTest {
 
     static final long nxID = -1L;
     private final UserRepository uR;
     private final CoffeeRepository cR;
 
-    @Autowired
-    EntityManager entityManager;
+    @Value("${spring.profiles.active:}")
+    private String activeProfiles;
+
+    @BeforeEach
+    void failIfUsingPostgres(){
+        for (String profileName : activeProfiles.split(",")) {
+            if (profileName.equals("psql")){
+                Assertions.fail("Should not use external database");
+            }
+        }
+    }
 
     @Autowired
-    public UsersTest(UserRepository uR, CoffeeRepository cR) {
+    public SqlTest(UserRepository uR, CoffeeRepository cR) {
         this.uR = uR;
         this.cR = cR;
     }
-
-
 
     @Test
     void getUser() {
